@@ -22,7 +22,7 @@
         </div>
         <div class="button-group">
           <img src="../assets/svg-icon/intro-animation/farmer.gif" class="farmer-icon" />
-          <button class="btn" @click="sendAnswer"><sendAnswer /></button>
+          <button class="btn" ><sendAnswer /></button>
           <button class="btn" @click="backToPreviousStage"><backToGamePage /></button>
         </div>
       </div>
@@ -32,7 +32,6 @@
 </template>
 
 <script>
-import axios from 'axios';
 import { mapActions, mapState } from 'vuex';
 import TheHeader from '@/components/TheHeader.vue';
 import ProgressBar from '@/components/ProgressBar.vue';
@@ -69,44 +68,7 @@ export default {
         this.whichStage -= 1;
       }
     },
-    async sendAnswer() {
-      try {
-        this.isLoading = true;
-        await this.createClientId();
-        await this.getUserToken();
-        const data = JSON.parse(localStorage.getItem('SpotDiffData'));
-        data.forEach((factory) => {
-          /* eslint no-param-reassign: ["error", { "props": false }] */
-          if (factory.land_usage === 'buliding-land') {
-            factory.land_usage = 1;
-          } else if (factory.land_usage === 'farm-land') {
-            factory.land_usage = 2;
-          } else {
-            factory.land_usage = 0;
-          }
-          if (!factory.expansion) {
-            factory.expansion = 1;
-          } else if (factory.expansion) {
-            factory.expansion = 2;
-          } else {
-            factory.expansion = 0;
-          }
-          delete factory.latitude;
-          delete factory.longitude;
-          delete factory.address;
-        });
-        await axios.post(`${process.env.VUE_APP_SPOTDIFF_APP_URL || '/api'}/answer/`, {
-          user_token: this.userToken,
-          data,
-        });
-        localStorage.removeItem('SpotDiffData');
-        await this.getStatusData();
-        this.isLoading = false;
-        this.$router.push('ending');
-      } catch (e) {
-        console.log(e.response.data.message);
-      }
-    },
+
   },
   computed: {
     ...mapState(['userToken', 'clientId']),

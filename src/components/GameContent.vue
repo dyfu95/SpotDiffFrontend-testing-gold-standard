@@ -161,22 +161,13 @@ export default {
   async created() {
     try {
       this.isLoading = true;
-      await this.createClientId();
-      await this.getUserToken();
-      if (!this.hasSpotDiffDataInLocal) {
-        await this.getFactoriesData();
-        this.getFactoryCoord();
-      }
+
       this.isLoading = false;
     } catch (e) {
       console.error(e);
     }
   },
-  async mounted() {
-    if (this.hasSpotDiffDataInLocal) {
-      this.getFactoryCoord();
-    }
-  },
+
 };
 </script>
 
