@@ -36,6 +36,7 @@ export default {
   },
   data() {
     return {
+      landUsage: '',
       isLoading: false,
       allFactoriesData: [],
       currentQuestionData: {
@@ -61,7 +62,8 @@ export default {
         this.$refs.start.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'nearest' });
       }
     },
-    identifyLandUsage() {
+    identifyLandUsage(landUsage) {
+      this.landUsage = landUsage;
       // if (landUsage === 'unknown') {
       //   this.identifyHasIllegalFactory('unknown');
       // } else {
@@ -133,9 +135,7 @@ export default {
     storedQuestionData() {
       return {};
     },
-    landUsage() {
-      return this.currentQuestionData.userAnswer.landUsage;
-    },
+
     hasSpotDiffDataInLocal() {
       return (
         localStorage.getItem('SpotDiffData')
